@@ -6,6 +6,8 @@ git_source(:github) do |repo_name|
 end
 
 
+# graphql
+gem 'graphql'
 #cors
 gem 'rack-cors'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -54,3 +56,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'graphiql-rails', group: :development
