@@ -44,15 +44,19 @@ QueryType = GraphQL::ObjectType.define do
   end
 end
 
-# MutationType = GraphQL::ObjectType.define do
-# 	name 'Mutation'
+MutationType = GraphQL::ObjectType.define do
+	name 'Mutation'
 
-# 	field :createUser do
-# 		type UserType
-# 		argument :name, !types.String
-# 		resolve -> (obj, args, ctx) { User.create(name: "thing") }
-# 	end
-# end
+	field :createUser do
+		type UserType
+		# argument :key, !types.String
+		argument :name, !types.String
+		resolve -> (obj, args, ctx) { 
+			properForm = {"name"=> args[:name]}
+			User.create!(properForm) 
+		}
+	end
+end
 
 UserInputType = GraphQL::InputObjectType.define do
 	name "UserInputType"
@@ -62,17 +66,17 @@ UserInputType = GraphQL::InputObjectType.define do
 	end
 end
 
-MutationType = GraphQL::ObjectType.define do
-	name 'Mutation'
+# MutationType = GraphQL::ObjectType.define do
+# 	name 'Mutation'
 
-	field :createUser do
-		type UserType
-		argument :user, UserInputType
-		resolve -> (obj, args, ctx) { User.create!(args[:user]) }
-	end
-end
+# 	field :createUser do
+# 		type UserType
+# 		argument :user, UserInputType
+# 		resolve -> (obj, args, ctx) { User.create!(args[:user]) }
+# 	end
+# end
 
 CommentApiSchema = GraphQL::Schema.define do
-  mutation MutationType
   query QueryType
+  mutation MutationType
 end
