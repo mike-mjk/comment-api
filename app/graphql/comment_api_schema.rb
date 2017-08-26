@@ -57,7 +57,7 @@ end
 UserInputType = GraphQL::InputObjectType.define do
 	name "UserInputType"
 
-	argument :name, !types.hash do
+	argument :name, !types.String do
 		description "user name"
 	end
 end
