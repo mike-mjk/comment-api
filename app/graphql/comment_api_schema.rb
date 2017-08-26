@@ -29,6 +29,8 @@ MessageType = GraphQL::ObjectType.define do
 	field :message, !types.String
 	field :userId, !types.Int, property: :user_id
 	field :id, !types.ID
+	field :user, UserType
+	field :created_at, types.Int
 end
 
 UserType = GraphQL::ObjectType.define do
@@ -36,6 +38,7 @@ UserType = GraphQL::ObjectType.define do
 
 	field :name, !types.String
 	field :id, !types.ID
+	field :messages, types[MessageType]
 end
 
 QueryType = GraphQL::ObjectType.define do
