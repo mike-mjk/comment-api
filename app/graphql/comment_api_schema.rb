@@ -1,28 +1,4 @@
-# Types::UserType = GraphQL::ObjectType.define do
-#   name "User"
-#   field :name, Types::SringType
-#   # field :id, !types.ID
-# end
 
-
-# Types::QueryType = GraphQL::ObjectType.define do
-#   name "Query"
-#   # Add root-level fields here.
-#   # They will be entry points for queries on your schema.
-
-
-  # field :user Types::UserType do
-  #   argument :id, !types.id
-  #   resolve -> (root, args, ctx) { User.find(args[:id]) }
-  # end
-  # TODO: remove me
-  # field :testField, types.String do
-  #   description "An example field added by the generator"
-  #   resolve ->(obj, args, ctx) {
-  #     "Hello World!"
-  #   }
-  # end
-# end
 MessageType = GraphQL::ObjectType.define do
 	name 'Message'
 
@@ -68,7 +44,35 @@ QueryType = GraphQL::ObjectType.define do
   end
 end
 
+# MutationType = GraphQL::ObjectType.define do
+# 	name 'Mutation'
+
+# 	field :createUser do
+# 		type UserType
+# 		argument :name, !types.String
+# 		resolve -> (obj, args, ctx) { User.create(name: "thing") }
+# 	end
+# end
+
+UserInputType = GraphQL::InputObjectType.define do
+	name "UserInputType"
+
+	argument :name, !types.hash do
+		description "user name"
+	end
+end
+
+MutationType = GraphQL::ObjectType.define do
+	name 'Mutation'
+
+	field :createUser do
+		type UserType
+		argument :user, UserInputType
+		resolve -> (obj, args, ctx) { User.create!(args[:user]) }
+	end
+end
+
 CommentApiSchema = GraphQL::Schema.define do
-  # mutation(Types::MutationType)
+  mutation MutationType
   query QueryType
 end
