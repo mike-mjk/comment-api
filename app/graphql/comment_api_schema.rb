@@ -12,7 +12,7 @@ end
 UserType = GraphQL::ObjectType.define do
 	name 'User'
 
-	field :name, types.String
+	field :name, !types.String
 	field :id, !types.ID
 	field :messages, types[MessageType]
 end
@@ -20,11 +20,6 @@ end
 QueryType = GraphQL::ObjectType.define do
   name 'Query'
 
-  field :hello do
-    type types.String
-    # argument :id, !types.id
-    resolve -> (obj, args, ctx) { 'Hello GraphQL' } #User.find(args[:id])
-  end
 
   field :user do
   	type UserType
@@ -34,7 +29,7 @@ QueryType = GraphQL::ObjectType.define do
 
   field :userByName do
   	type UserType
-  	argument :name, types.String
+  	argument :name, !types.String
   	resolve -> (obj, args, ctx) { User.where(name: args[:name]).first }
   end
 
