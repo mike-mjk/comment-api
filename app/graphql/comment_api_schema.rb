@@ -70,6 +70,12 @@ MutationType = GraphQL::ObjectType.define do
 			@new
 		}
 	end
+
+	field :deleteMessage do
+		type MessageType
+		argument :id, !types.ID
+		resolve -> (obj, args, ctx) { Message.destroy(args[:id]) }
+	end
 end
 
 UserInputType = GraphQL::InputObjectType.define do
