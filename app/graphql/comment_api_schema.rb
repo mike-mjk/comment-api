@@ -12,7 +12,7 @@ end
 UserType = GraphQL::ObjectType.define do
 	name 'User'
 
-	field :name, !types.String
+	field :name, types.String
 	field :id, !types.ID
 	field :messages, types[MessageType]
 end
