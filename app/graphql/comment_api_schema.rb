@@ -32,6 +32,13 @@ QueryType = GraphQL::ObjectType.define do
   	resolve -> (obj, args, ctx) { User.find(args[:id]) }
   end
 
+  field :userByName do
+  	type UserType
+  	argument :name, !types.String
+  	resolve -> (obj, args, ctx) { User.where(name: args[:name]).first }
+  end
+
+
   field :message do
   	type MessageType
   	argument :id, !types.ID
