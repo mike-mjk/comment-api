@@ -76,6 +76,16 @@ MutationType = GraphQL::ObjectType.define do
 		argument :id, !types.ID
 		resolve -> (obj, args, ctx) { Message.destroy(args[:id]) }
 	end
+
+	field :updateMessage do
+		type MessageType
+		argument :id, !types.ID
+		argument :message, !types.String
+		resolve -> (obj, args, ctx) { 
+			messagehash = { "message" => args[:message] }
+			Message.update(args[:id], messagehash )}
+	end
+
 end
 
 UserInputType = GraphQL::InputObjectType.define do
