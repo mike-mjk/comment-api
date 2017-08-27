@@ -58,6 +58,18 @@ MutationType = GraphQL::ObjectType.define do
 			User.create!(properForm) 
 		}
 	end
+
+	field :createMessage do
+		type MessageType
+		argument :name, !types.String
+		argument :message, !types.String
+		resolve -> (obj, args, ctx) {
+			@user = User.where(name: args[:name]).first
+			@new = @user.messages.build(message: args[:message])
+			@new.save
+			@new
+		}
+	end
 end
 
 UserInputType = GraphQL::InputObjectType.define do
