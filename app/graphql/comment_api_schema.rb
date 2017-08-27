@@ -34,7 +34,7 @@ QueryType = GraphQL::ObjectType.define do
 
   field :userByName do
   	type UserType
-  	argument :name, !types.String
+  	argument :name, types.String
   	resolve -> (obj, args, ctx) { User.where(name: args[:name]).first }
   end
 
