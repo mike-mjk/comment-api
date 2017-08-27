@@ -17,6 +17,12 @@ UserType = GraphQL::ObjectType.define do
 	field :messages, types[MessageType]
 end
 
+LikeType = GraphQL::ObjectType.define do
+	name 'Like'
+	field :userId, !types.Int, property: :user_id
+	field :messageId, !types.Int, property: :message_id
+end
+
 QueryType = GraphQL::ObjectType.define do
   name 'Query'
 
@@ -44,10 +50,35 @@ QueryType = GraphQL::ObjectType.define do
   	type types[MessageType]
   	resolve -> (obj, args, ctx) { Message.all }
   end
+
+  field :likedByUser do
+  	type LikeType
+  	argument :user_id, !types.Int
+  	argument :message_id, !types.Int
+  	resolve -> (obj, args, ctx) {Like.where(:user_id =>args[:user_id]).where(:message_id => args[:message_id]).first}
+  end
 end
 
 MutationType = GraphQL::ObjectType.define do
 	name 'Mutation'
+
+	field :likeMessage do
+		type LikeType
+		argument :user_id, !types.Int
+		argument :message_id, !types.Int
+		resolve -> (obj, args, ctx) {Like.create(:user_id => args[:user_id], :message_id => args[:message_id])}
+	end
+
+	field :unLikeMessage do
+		type LikeType
+		argument :user_id, !types.Int
+		argument :message_id, !types.Int
+		resolve -> (obj, args, ctx) {
+			Like.where(:user_id =>args[:user_id])
+			.where(:message_id => args[:message_id])
+			.first
+			.destroy}
+	end
 
 	field :createUser do
 		type UserType
