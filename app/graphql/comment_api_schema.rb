@@ -89,12 +89,9 @@ MutationType = GraphQL::ObjectType.define do
 			.first
 			.destroy}
 	end
-			# delete me
-			# properForm = {"name"=> args[:name]}
-			# User.create!(properForm) 
+
 	field :createUser do
 		type UserType
-		# argument :key, !types.String
 		argument :name, !types.String
 		resolve -> (obj, args, ctx) {
 			user = User.where(name: args[:name]).first
@@ -104,6 +101,12 @@ MutationType = GraphQL::ObjectType.define do
 				user
 			end
 		}
+	end
+
+	field :deleteUser do
+		type UserType
+		argument :name, !types.String
+		resolve -> (obj, args, ctx) { User.destroy(name: args[:name]) }
 	end
 
 	field :createMessage do
@@ -143,15 +146,6 @@ UserInputType = GraphQL::InputObjectType.define do
 	end
 end
 
-# MutationType = GraphQL::ObjectType.define do
-# 	name 'Mutation'
-
-# 	field :createUser do
-# 		type UserType
-# 		argument :user, UserInputType
-# 		resolve -> (obj, args, ctx) { User.create!(args[:user]) }
-# 	end
-# end
 
 CommentApiSchema = GraphQL::Schema.define do
   query QueryType
