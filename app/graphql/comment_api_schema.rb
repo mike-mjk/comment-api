@@ -79,14 +79,20 @@ MutationType = GraphQL::ObjectType.define do
 			.first
 			.destroy}
 	end
-
+			# delete me
+			# properForm = {"name"=> args[:name]}
+			# User.create!(properForm) 
 	field :createUser do
 		type UserType
 		# argument :key, !types.String
 		argument :name, !types.String
-		resolve -> (obj, args, ctx) { 
-			properForm = {"name"=> args[:name]}
-			User.create!(properForm) 
+		resolve -> (obj, args, ctx) {
+			user = User.where(name: args[:name]).first
+			if user.nil?
+				User.create!(name: args[:name])
+			else
+				user
+			end
 		}
 	end
 
