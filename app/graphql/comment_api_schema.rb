@@ -105,8 +105,8 @@ MutationType = GraphQL::ObjectType.define do
 
 	field :deleteUser do
 		type UserType
-		argument :name, !types.String
-		resolve -> (obj, args, ctx) { User.destroy(name: args[:name]) }
+		argument :id, !types.ID
+		resolve -> (obj, args, ctx) { User.destroy(args[:id]) }
 	end
 
 	field :createMessage do
