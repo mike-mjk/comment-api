@@ -57,6 +57,12 @@ QueryType = GraphQL::ObjectType.define do
   	argument :message_id, !types.ID
   	resolve -> (obj, args, ctx) {Like.where(:user_id =>args[:user_id]).where(:message_id => args[:message_id]).first}
   end
+
+  field :totalLikes do
+  	type types[LikeType]
+  	argument :message_id, !types.ID
+  	resolve -> (obj, args, ctx) {Like.where(:message_id => args[:message_id])}
+  end
 end
 
 MutationType = GraphQL::ObjectType.define do
